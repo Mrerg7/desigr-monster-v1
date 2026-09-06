@@ -42,7 +42,7 @@ const metaDescription = description?.trim() || DEFAULT_DESCRIPTION;
       content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
     />
     <meta name="google-site-verification" content="S1ENVFux-3cs4YKS0Z7bbfM3beIT94zHARjWmhRnFqI" />
-    <link rel="canonical" href={canonicalURL} />
+    {!noindex && <link rel="canonical" href={canonicalURL} />}
 
     <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -55,7 +55,7 @@ const metaDescription = description?.trim() || DEFAULT_DESCRIPTION;
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:url" content={noindex ? SITE : canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:site_name" content={siteName} />
