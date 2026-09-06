@@ -14,10 +14,44 @@
 html {
   @apply bg-[var(--color-void)] text-[var(--color-ghost)] antialiased;
   scroll-behavior: smooth;
+  /* Prefer 16px root so rem-based type stays mobile-readable */
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   @apply min-h-dvh overflow-x-hidden;
+}
+
+/* Screen-reader brand / landmark text (SEO + a11y without visual clutter) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Prefer reduced motion for mobile usability / comfort */
+@media (prefers-reduced-motion: reduce) {
+  .mystic-image,
+  .fog-layer,
+  .drift-layer,
+  .cta-reveal,
+  .footer-reveal {
+    animation: none !important;
+  }
+
+  .mystic-image {
+    opacity: 1;
+    filter: brightness(0.85) contrast(1.05) saturate(0.75);
+    transform: none;
+  }
 }
 
 /* Mystic image effects */

@@ -1,9 +1,14 @@
-# Cloudflare Workers Static Assets — pure static site
-# No Worker script / no adapter required
+# Cloudflare Workers Static Assets + thin Worker for host canonicalization
 name = "desigr-monster-v1"
 compatibility_date = "2026-08-11"
+main = "./worker/index.js"
 
 [assets]
 directory = "./dist"
-# Optional: handle SPA-style 404s if needed later
-# not_found_handling = "404-page"
+binding = "ASSETS"
+# Always run Worker first so www → apex redirects apply even when an asset matches
+run_worker_first = true
+# Serve nearest 404.html with a real 404 status (not an empty body)
+not_found_handling = "404-page"
+# Folder indexes keep trailing slash; avoids / vs /index.html duplicate URLs
+html_handling = "auto-trailing-slash"

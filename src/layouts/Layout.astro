@@ -8,16 +8,23 @@ interface Props {
   noindex?: boolean;
 }
 
+const SITE = 'https://desigr.monster';
+const DEFAULT_DESCRIPTION =
+  'desigr.monster — a visual demonstration surface for design systems, atmospheric imagery, and acquisition inquiries.';
+
 const {
   title = 'desigr.monster',
-  description = '',
+  description = DEFAULT_DESCRIPTION,
   image = 'https://imagedelivery.net/-sPAUAWeA405NiWJ0SNIQA/82297fc6-8865-47a7-d81d-c812ed742500/public',
   noindex = false,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Always emit an absolute apex canonical (never www / http variants)
+const path = Astro.url.pathname === '/index.html' ? '/' : Astro.url.pathname;
+const canonicalURL = new URL(path, SITE).href;
 const siteName = 'desigr.monster';
 const ogImage = image;
+const metaDescription = description?.trim() || DEFAULT_DESCRIPTION;
 ---
 
 <!doctype html>
@@ -29,8 +36,12 @@ const ogImage = image;
 
     <!-- Primary -->
     <title>{title}</title>
-    <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="description" content={metaDescription} />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
+    />
+    <meta name="google-site-verification" content="S1ENVFux-3cs4YKS0Z7bbfM3beIT94zHARjWmhRnFqI" />
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Icons -->
@@ -46,36 +57,39 @@ const ogImage = image;
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="desigr.monster" />
+    <meta property="og:image:alt" content="desigr.monster atmospheric visual" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="desigr.monster" />
+    <meta name="twitter:image:alt" content="desigr.monster atmospheric visual" />
 
     <!-- Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": siteName,
-      "url": "https://desigr.monster",
-      "description": description || "desigr.monster",
-      "image": ogImage,
-      "publisher": {
-        "@type": "Organization",
-        "name": "desigr.monster",
-        "url": "https://desigr.monster",
-        "email": "sales@desertrich.com"
-      }
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: siteName,
+        url: SITE,
+        description: metaDescription,
+        image: ogImage,
+        publisher: {
+          '@type': 'Organization',
+          name: siteName,
+          url: SITE,
+          email: 'erg@desigr.monster',
+        },
+      })}
+    />
   </head>
   <body class="bg-[var(--color-void)] text-[var(--color-ghost)]">
     <slot />

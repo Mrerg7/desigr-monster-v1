@@ -1,0 +1,3 @@
+# Path-level aliases (host canonicalization is handled in worker/index.js)
+/index.html / 301
+/sitemap.xml /sitemap-index.xml 301

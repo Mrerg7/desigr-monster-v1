@@ -1,16 +1,29 @@
 # desigr.monster
 
-Mysterious, image-driven static site built with **Astro 7** + **Tailwind CSS 4**, deployed as pure **Cloudflare Workers Static Assets** (no adapter, assets-only).
+Mysterious, image-driven static site built with **Astro 7** + **Tailwind CSS 4**, deployed as **Cloudflare Workers Static Assets** with a thin Worker for SEO host canonicalization.
 
 ## Stack
 
 - Astro 7 (static output)
 - Tailwind CSS 4 via `@tailwindcss/vite`
 - `@astrojs/sitemap`
-- Content Collections (ready)
 - Cloudflare Images CDN for the primary visual
-- Full Open Graph + Twitter cards + JSON-LD structured data
-- `robots.txt` + auto-generated sitemap
+- Open Graph + Twitter cards + JSON-LD structured data
+- `robots.txt`, sitemap, custom `404`, and apex-host redirects
+
+## Search / indexing notes
+
+This build addresses common Search Console “not indexed” reasons:
+
+| Issue | Fix in this repo |
+| --- | --- |
+| Alternate page with proper canonical | Worker 301 `www` → `https://desigr.monster` |
+| Duplicate without user-selected canonical | Absolute apex `<link rel="canonical">` + trailing-slash HTML handling |
+| Not found (404) | Custom `404` page + `not_found_handling = "404-page"`; favicon.ico restored |
+| Blocked due to access forbidden (403) | Worker never returns 403 for public GET/HEAD; maps to 404 instead |
+| Mobile usability | ≥12px body type, 48px CTA tap target, viewport meta, reduced-motion |
+
+After deploy, use URL Inspection → Request indexing on the homepage and clear outdated URLs.
 
 ## Local development
 
@@ -19,35 +32,21 @@ npm install
 npm run dev
 ```
 
-## Build & Deploy (Cloudflare Workers Static Assets)
+## Build & Deploy (Cloudflare Workers)
 
 ```bash
 npm run build
-# outputs pure static files to ./dist
+# outputs static files to ./dist
 
-# Deploy (requires wrangler logged in)
 npm run deploy
 # or
 npx wrangler deploy
 ```
 
-`wrangler.toml` is configured for assets-only:
-
-```toml
-[assets]
-directory = "./dist"
-```
-
-No Worker script or `@astrojs/cloudflare` adapter is required.
+`wrangler.toml` runs a small Worker first (`run_worker_first = true`) so host redirects apply before assets are served.
 
 ## Domain
 
-Production target: **https://desigr.monster**
+Production: **https://desigr.monster** (canonical host)
 
-CTA routes to: `sales@desertrich.com`
-
-## Notes
-
-- Fully static, edge-cached via Cloudflare.
-- Mobile-first, full-viewport image with atmospheric fades, vignette, grain, and subtle drift.
-- No body copy — visual + single acquisition CTA + required disclaimer footer.
+CTA: `erg@desigr.monster`

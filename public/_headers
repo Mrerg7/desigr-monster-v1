@@ -1,0 +1,11 @@
+# Security + crawler-friendly headers (do not block Googlebot)
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+/
+  Link: <https://desigr.monster/>; rel="canonical"
+
+/404
+  X-Robots-Tag: noindex, nofollow

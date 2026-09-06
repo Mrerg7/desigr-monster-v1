@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page not found · desigr.monster"
+  description="The page you requested is not available on desigr.monster."
+  noindex={true}
+>
+  <main
+    class="flex min-h-dvh w-full flex-col items-center justify-center bg-[var(--color-void)] px-6 py-16 text-center"
+  >
+    <p class="text-sm font-medium tracking-[0.28em] uppercase text-[var(--color-whisper)]">
+      404
+    </p>
+    <h1 class="mt-4 max-w-md text-2xl font-medium tracking-tight text-[var(--color-ghost)] sm:text-3xl">
+      This page does not exist
+    </h1>
+    <p class="mt-4 max-w-md text-base leading-relaxed text-[var(--color-whisper)]">
+      The link may be outdated, or the path was never published on desigr.monster.
+    </p>
+    <a
+      href="/"
+      class="mt-10 inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 bg-black/30 px-8 text-sm font-medium tracking-[0.2em] uppercase text-[var(--color-ghost)] transition-colors hover:border-white/30 hover:bg-black/45 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+    >
+      Back home
+    </a>
+  </main>
+</Layout>

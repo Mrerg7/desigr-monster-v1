@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Do not waste crawl budget on error / utility paths
+Disallow: /cdn-cgi/
+Disallow: /404
+
 Sitemap: https://desigr.monster/sitemap-index.xml
+Sitemap: https://desigr.monster/sitemap-0.xml
