@@ -3,6 +3,11 @@ name = "desigr-monster-v1"
 compatibility_date = "2026-08-11"
 main = "./worker/index.js"
 
+# Dashboard build command is "None", so wrangler deploy must compile Astro first.
+# This runs before upload, including on Workers Builds (`npx wrangler deploy`).
+[build]
+command = "npm run build"
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
