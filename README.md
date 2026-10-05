@@ -4,7 +4,7 @@ Premium domain sales desk. Static site built with **Astro 7** + **Tailwind CSS 4
 
 Production: **https://desigr.monster**
 
-Desk: `erg@desigr.monster`
+Desk: `sales@desertrich.com`
 
 ## Stack
 
