@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { EMAIL } from '../data/site';
+---
+<Layout
+  title="Transfer a premium domain | desigr.monster"
+  description="How to buy a domain from desigr.monster: escrow, registrar push, and a direct note to erg@desigr.monster in Phoenix."
+>
+  <Header />
+  <main class="mx-auto max-w-2xl px-5 py-14">
+    <h1 class="display text-5xl">The transfer</h1>
+    <div class="mt-6 space-y-4 leading-relaxed">
+      <p>desigr.monster is a private domain desk in Phoenix. The names listed here are held for sale. There is no broker network and no bid history to perform.</p>
+      <p>Payment runs through Escrow.com. A same-registrar push is preferred. Cross-registrar transfers use an auth code after funds are locked.</p>
+      <p>Offers saved in the browser stay on your device. To start a transfer, write {EMAIL}.</p>
+    </div>
+    <h2 class="mt-12 text-sm uppercase tracking-[0.16em] text-muted dark:text-muted-dark">What we will not do</h2>
+    <ul class="mt-4 space-y-2">
+      <li>Take a wire to a personal account.</li>
+      <li>Lease a name with a buyout that resets every month.</li>
+      <li>Inflate a view counter. The figures on each file are rounded and static.</li>
+    </ul>
+    <a href={`mailto:${EMAIL}?subject=Transfer%20question`} class="mt-10 inline-flex h-12 items-center rounded-lg bg-ink px-5 text-sm text-bg dark:bg-ink-dark dark:text-bg-dark">Write the desk</a>
+  </main>
+  <Footer />
+</Layout>

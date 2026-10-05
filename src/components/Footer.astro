@@ -1,0 +1,21 @@
+---
+import { EMAIL } from '../data/site';
+---
+<footer class="border-t border-line dark:border-line-dark">
+  <div class="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:grid-cols-3">
+    <div>
+      <p class="display text-2xl">desigr.monster</p>
+      <p class="mt-2 max-w-xs text-sm text-muted dark:text-muted-dark">
+        A private desk for premium domain names. One owner. Escrow on every transfer.
+      </p>
+    </div>
+    <div class="text-sm">
+      <p class="text-muted dark:text-muted-dark">Desk</p>
+      <a class="mt-2 block hover:underline" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      <p class="mt-1 text-muted dark:text-muted-dark">Phoenix, Arizona</p>
+    </div>
+    <p class="text-sm text-muted dark:text-muted-dark">
+      Buy .monster domains · domain marketplace · premium names for sale. Prices are asking prices in USD.
+    </p>
+  </div>
+</footer>

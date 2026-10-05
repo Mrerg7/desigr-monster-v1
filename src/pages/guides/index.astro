@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { guides } from '../../data/guides';
+---
+<Layout
+  title="Domain valuation guides | desigr.monster"
+  description="Short notes on premium domain names, investment domains, expired-name traps, and how escrow transfers work."
+>
+  <Header />
+  <main class="mx-auto max-w-3xl px-5 py-14">
+    <h1 class="display text-5xl">Guides</h1>
+    <p class="mt-3 text-muted dark:text-muted-dark">Written for buyers. Updated when a transfer teaches something new.</p>
+    <ul class="mt-10 divide-y divide-line dark:divide-line-dark">
+      {guides.map((post) => (
+        <li>
+          <a href={`/guides/${post.slug}/`} class="block py-6">
+            <h2 class="display text-3xl">{post.title}</h2>
+            <p class="mt-2 text-sm text-muted dark:text-muted-dark">{post.dek}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+  <Footer />
+</Layout>

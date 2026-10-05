@@ -1,0 +1,59 @@
+---
+import { EMAIL } from '../data/site';
+const links = [
+  { href: '/portfolio/', label: 'Portfolio' },
+  { href: '/guides/', label: 'Guides' },
+  { href: '/about/', label: 'Transfer' },
+];
+const path = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur-md dark:border-line-dark dark:bg-bg-dark/90">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
+    <a href="/" class="flex items-baseline gap-1.5" aria-label="desigr.monster home">
+      <span class="display text-2xl leading-none">desigr</span>
+      <span class="text-sm tracking-wide text-accent dark:text-accent-dark">.monster</span>
+    </a>
+    <nav class="hidden items-center gap-7 md:flex" aria-label="Primary">
+      {links.map((item) => (
+        <a href={item.href} class:list={['text-sm', path.startsWith(item.href) ? 'text-ink dark:text-ink-dark' : 'text-muted dark:text-muted-dark']}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-2">
+      <button type="button" id="theme-toggle" class="inline-flex size-12 items-center justify-center rounded-lg" aria-label="Switch color mode">
+        <span aria-hidden="true">◐</span>
+      </button>
+      <a href={`mailto:${EMAIL}?subject=Domain%20inquiry`} class="hidden h-12 items-center rounded-lg bg-ink px-4 text-sm text-bg md:inline-flex dark:bg-ink-dark dark:text-bg-dark">
+        Make an offer
+      </a>
+      <button type="button" id="nav-toggle" class="inline-flex size-12 items-center justify-center md:hidden" aria-expanded="false" aria-controls="mobile-nav">
+        Menu
+      </button>
+    </div>
+  </div>
+  <nav id="mobile-nav" hidden class="border-t border-line px-5 py-3 md:hidden dark:border-line-dark">
+    {links.map((item) => (
+      <a href={item.href} class="flex h-12 items-center text-base">{item.label}</a>
+    ))}
+    <a href={`mailto:${EMAIL}`} class="flex h-12 items-center text-base text-accent dark:text-accent-dark">Contact the desk</a>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const next = !document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem('desigr-theme', next ? 'dark' : 'light');
+  });
+  const navBtn = document.getElementById('nav-toggle');
+  const nav = document.getElementById('mobile-nav');
+  navBtn?.addEventListener('click', () => {
+    const open = nav?.hasAttribute('hidden');
+    if (open) nav?.removeAttribute('hidden');
+    else nav?.setAttribute('hidden', '');
+    navBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>

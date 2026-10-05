@@ -1,30 +1,45 @@
 ---
 import '../styles/global.css';
+import { EMAIL, SITE } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const SITE = 'https://desigr.monster';
 const DEFAULT_DESCRIPTION =
-  'desigr.monster — a visual demonstration surface for design systems, atmospheric imagery, and acquisition inquiries.';
+  'Buy premium domain names from a private Phoenix desk. desigr.monster is for sale, with escrow on every transfer.';
 
 const {
-  title = 'desigr.monster',
+  title = 'desigr.monster | Premium Domain for Sale | desigr',
   description = DEFAULT_DESCRIPTION,
   image = 'https://imagedelivery.net/-sPAUAWeA405NiWJ0SNIQA/82297fc6-8865-47a7-d81d-c812ed742500/public',
   noindex = false,
+  jsonLd,
 } = Astro.props;
 
-// Always emit an absolute apex canonical (never www / http variants)
 const path = Astro.url.pathname === '/index.html' ? '/' : Astro.url.pathname;
 const canonicalURL = new URL(path, SITE).href;
-const siteName = 'desigr.monster';
-const ogImage = image;
 const metaDescription = description?.trim() || DEFAULT_DESCRIPTION;
+const graphs = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'desigr.monster',
+    url: SITE,
+    email: EMAIL,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Phoenix',
+      addressRegion: 'AZ',
+      addressCountry: 'US',
+    },
+  },
+  ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+];
 ---
 
 <!doctype html>
@@ -33,65 +48,38 @@ const metaDescription = description?.trim() || DEFAULT_DESCRIPTION;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
-
-    <!-- Primary -->
     <title>{title}</title>
     <meta name="description" content={metaDescription} />
-    <meta
-      name="robots"
-      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
-    />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <meta name="google-site-verification" content="S1ENVFux-3cs4YKS0Z7bbfM3beIT94zHARjWmhRnFqI" />
     {!noindex && <link rel="canonical" href={canonicalURL} />}
-
-    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
-
-    <!-- Theme -->
-    <meta name="theme-color" content="#050505" />
-    <meta name="color-scheme" content="dark" />
-
-    <!-- Open Graph -->
+    <meta name="theme-color" content="#f4f1ea" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={noindex ? SITE : canonicalURL} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={metaDescription} />
-    <meta property="og:site_name" content={siteName} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="desigr.monster" />
+    <meta property="og:image" content={image} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="desigr.monster atmospheric visual" />
-    <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={metaDescription} />
-    <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content="desigr.monster atmospheric visual" />
-
-    <!-- Structured Data -->
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: siteName,
-        url: SITE,
-        description: metaDescription,
-        image: ogImage,
-        publisher: {
-          '@type': 'Organization',
-          name: siteName,
-          url: SITE,
-          email: 'erg@desigr.monster',
-        },
-      })}
-    />
+    <meta name="twitter:image" content={image} />
+    {graphs.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('desigr-theme');
+          var dark = stored === 'dark' || (!stored && matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-[var(--color-void)] text-[var(--color-ghost)]">
+  <body>
     <slot />
   </body>
 </html>

@@ -1,88 +1,99 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import DomainCard from '../components/DomainCard.astro';
+import { domains, fqdn, formatPrice, recentSales } from '../data/domains';
+import { EMAIL, SITE } from '../data/site';
 
-const IMAGE =
-  'https://imagedelivery.net/-sPAUAWeA405NiWJ0SNIQA/82297fc6-8865-47a7-d81d-c812ed742500/public';
-
-const DESCRIPTION =
-  'desigr.monster — a visual demonstration surface for design systems, atmospheric imagery, and acquisition inquiries.';
+const hero = domains.find((d) => d.slug === 'desigr-monster')!;
+const featured = domains.filter((d) => d.featured);
+const full = fqdn(hero);
 ---
 
-<Layout title="desigr.monster" description={DESCRIPTION}>
-  <main class="w-full bg-[var(--color-void)]">
-    <!-- Full-bleed mystic hero -->
-    <section class="relative min-h-dvh w-full overflow-hidden" aria-label="desigr.monster">
-      <h1 class="sr-only">desigr.monster</h1>
-
-      <div class="absolute inset-0 overflow-hidden">
-        <img
-          src={IMAGE}
-          alt="Atmospheric mist and light across a dark landscape for desigr.monster"
-          width="1920"
-          height="1080"
-          decoding="async"
-          fetchpriority="high"
-          class="mystic-image absolute inset-0 h-full w-full object-cover object-center drift-layer select-none"
-          style="will-change: transform, opacity, filter;"
-        />
+<Layout
+  title="desigr.monster | Premium Domain for Sale | desigr"
+  description={`desigr.monster is available now at ${formatPrice(hero.price)}. Buy .monster domains and other premium names with escrow and a direct reply from the desk.`}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: full,
+    description: hero.summary,
+    url: SITE,
+    offers: {
+      '@type': 'Offer',
+      price: String(hero.price),
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE}/domain/${hero.slug}/`,
+    },
+  }}
+>
+  <Header />
+  <main>
+    <section class="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[1.2fr_0.8fr] lg:py-24">
+      <div>
+        <p class="text-xs uppercase tracking-[0.18em] text-muted dark:text-muted-dark">Premium domain for sale</p>
+        <h1 class="display mt-4 text-6xl sm:text-7xl">
+          {hero.name}<span class="text-accent dark:text-accent-dark">{hero.tld}</span>
+        </h1>
+        <p class="mt-5 max-w-xl text-lg text-muted dark:text-muted-dark">{hero.summary}</p>
+        <p class="mt-6 text-3xl tabular-nums">{formatPrice(hero.price)}</p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href={`mailto:${EMAIL}?subject=${encodeURIComponent('Buy now: ' + full)}`} class="inline-flex h-12 items-center justify-center rounded-lg bg-ink px-5 text-sm text-bg dark:bg-ink-dark dark:text-bg-dark">Buy now</a>
+          <a href={`/domain/${hero.slug}/`} class="inline-flex h-12 items-center justify-center rounded-lg border border-line px-5 text-sm dark:border-line-dark">Make offer</a>
+          <a href={`mailto:${EMAIL}?subject=Speak%20with%20the%20desk`} class="inline-flex h-12 items-center justify-center text-sm text-muted underline dark:text-muted-dark">Contact agent</a>
+        </div>
       </div>
-
-      <!-- Layered atmospheric overlays -->
-      <div
-        class="pointer-events-none absolute inset-0 fog-layer"
-        style="background: radial-gradient(ellipse 80% 70% at 50% 40%, transparent 0%, rgba(5,5,8,0.55) 55%, rgba(5,5,8,0.92) 100%);"
-        aria-hidden="true"
-      ></div>
-
-      <div
-        class="pointer-events-none absolute inset-0"
-        style="background: linear-gradient(to bottom, rgba(5,5,8,0.65) 0%, transparent 28%, transparent 62%, rgba(5,5,8,0.85) 100%);"
-        aria-hidden="true"
-      ></div>
-
-      <div
-        class="pointer-events-none absolute inset-0 opacity-40"
-        style="background: radial-gradient(circle at 30% 20%, rgba(90,70,50,0.18), transparent 45%), radial-gradient(circle at 75% 70%, rgba(40,30,50,0.22), transparent 40%);"
-        aria-hidden="true"
-      ></div>
-
-      <!-- Noise grain -->
-      <div class="noise absolute inset-0 opacity-[0.07]" aria-hidden="true"></div>
-
-      <!-- Subtle vignette edge -->
-      <div
-        class="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,0.75)]"
-        aria-hidden="true"
-      ></div>
+      <aside class="rounded-2xl border border-line bg-surface p-6 dark:border-line-dark dark:bg-surface-dark">
+        <p class="text-xs uppercase tracking-[0.16em] text-muted dark:text-muted-dark">This name, plainly</p>
+        <ul class="mt-4 space-y-4">
+          {hero.why.map((item) => <li class="border-t border-line pt-4 text-sm first:border-0 first:pt-0 dark:border-line-dark">{item}</li>)}
+        </ul>
+        <p class="mt-6 text-xs text-muted dark:text-muted-dark">{hero.views} people opened this file.</p>
+      </aside>
     </section>
 
-    <!-- Acquisition CTA — below hero (readable type + 48px tap target for mobile) -->
-    <section
-      class="cta-reveal relative z-20 flex justify-center bg-[var(--color-void)] px-6 py-10 sm:py-12"
-    >
-      <a
-        href="mailto:erg@desigr.monster"
-        class="group relative inline-flex min-h-12 items-center gap-2 rounded-full border border-white/10 bg-black/30 px-8 py-3.5 text-sm font-medium tracking-[0.22em] uppercase text-[var(--color-whisper)] backdrop-blur-md transition-all duration-700 hover:border-white/25 hover:bg-black/45 hover:text-[var(--color-ghost)] hover:shadow-[0_0_40px_rgba(180,160,140,0.15)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-        aria-label="Contact erg@desigr.monster"
-      >
-        <span class="relative z-10">Inquire</span>
-        <span
-          class="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-          aria-hidden="true"
-        ></span>
-      </a>
+    <section class="border-y border-line dark:border-line-dark">
+      <div class="mx-auto grid max-w-6xl gap-6 px-5 py-8 sm:grid-cols-3">
+        <div><h2 class="text-sm">Escrow.com</h2><p class="mt-1 text-sm text-muted dark:text-muted-dark">Funds sit with escrow until the name is in your account.</p></div>
+        <div><h2 class="text-sm">Registrar lock</h2><p class="mt-1 text-sm text-muted dark:text-muted-dark">Push or auth-code transfer. No account sharing.</p></div>
+        <div><h2 class="text-sm">One invoice</h2><p class="mt-1 text-sm text-muted dark:text-muted-dark">Asking price, or a written counter. No auction theater.</p></div>
+      </div>
     </section>
 
-    <!-- Footer disclaimer — ≥12px for mobile usability -->
-    <footer class="footer-reveal relative z-30 px-5 pb-8 pt-2 sm:px-8 sm:pb-10">
-      <p
-        class="mx-auto max-w-2xl text-center text-xs leading-relaxed tracking-wide text-white/40 sm:text-sm"
-      >
-        This website is for demonstration and informational purposes only. It does not constitute an
-        offer of services, a commitment to deploy, or a guarantee of outcomes. All statistics,
-        projections, and references to specific technologies are based on publicly available
-        information as of the date shown and are subject to change.
-      </p>
-    </footer>
+    <section class="mx-auto max-w-6xl px-5 py-16">
+      <div class="flex items-end justify-between">
+        <h2 class="display text-4xl">Names on the desk</h2>
+        <a href="/portfolio/" class="hidden h-12 items-center text-sm sm:inline-flex">Full portfolio</a>
+      </div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {featured.map((domain) => <DomainCard domain={domain} />)}
+      </div>
+    </section>
+
+    <section class="mx-auto grid max-w-6xl gap-10 px-5 pb-20 lg:grid-cols-2">
+      <div>
+        <h2 class="display text-4xl">Recent transfers</h2>
+        <ul class="mt-6 divide-y divide-line dark:divide-line-dark">
+          {recentSales.map((sale) => (
+            <li class="flex items-baseline justify-between py-3 text-sm">
+              <span>{sale.name}</span>
+              <span class="tabular-nums text-muted dark:text-muted-dark">{formatPrice(sale.price)} · {sale.when}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="rounded-2xl bg-ink p-8 text-bg dark:bg-ink-dark dark:text-bg-dark">
+        <h2 class="display text-4xl">How a purchase works</h2>
+        <ol class="mt-5 space-y-3 text-sm">
+          <li>1. You name the domain and a price, or accept the asking price.</li>
+          <li>2. We open escrow. You fund it. We do not take a wire to a personal account.</li>
+          <li>3. The name pushes or transfers. Escrow releases when the registrar confirms it.</li>
+        </ol>
+        <a href="/about/" class="mt-6 inline-flex h-12 items-center text-sm underline">Read the transfer notes</a>
+      </div>
+    </section>
   </main>
+  <Footer />
 </Layout>

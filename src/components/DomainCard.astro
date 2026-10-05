@@ -1,0 +1,17 @@
+---
+import { fqdn, formatPrice, type DomainListing } from '../data/domains';
+interface Props { domain: DomainListing }
+const { domain } = Astro.props;
+---
+<a href={`/domain/${domain.slug}/`} class="flex min-h-44 flex-col justify-between rounded-2xl border border-line bg-surface p-5 hover:border-ink/30 dark:border-line-dark dark:bg-surface-dark">
+  <div>
+    <p class="text-xs uppercase tracking-[0.16em] text-muted dark:text-muted-dark">{domain.category}</p>
+    <h3 class="display mt-2 text-3xl">
+      {domain.name}<span class="text-accent dark:text-accent-dark">{domain.tld}</span>
+    </h3>
+  </div>
+  <div class="mt-6 flex items-end justify-between gap-3 text-sm">
+    <span class="tabular-nums">{formatPrice(domain.price)}</span>
+    <span class="text-muted dark:text-muted-dark">{fqdn(domain)}</span>
+  </div>
+</a>

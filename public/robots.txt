@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 
-# Do not waste crawl budget on error / utility paths
 Disallow: /cdn-cgi/
 Disallow: /404
 
